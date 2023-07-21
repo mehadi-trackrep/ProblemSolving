@@ -19,6 +19,9 @@ We have a thumb rule -  (V.V.I.)
             so, we have to create a common column by using ROW_NUMBER() function.
 */
 
+-- We have two solutions so far!! --> 
+
+-- 1. Using CTE per OCCUPATION & solution (2) is it's optimised version using PARTITION BY!
 
 WITH DOCTOR AS (
     SELECT  
@@ -64,3 +67,51 @@ FROM
     LEFT JOIN ACTOR A
         ON P.RN=A.RN;
 
+
+-- 2. Using PARTITION BY per OCCUPATION
+WITH FOUR_COLUMNS_WITH_ROW_NUMBER AS (
+    SELECT
+        CASE WHEN OCCUPATION = 'Doctor' THEN Name ELSE NULL END Doctor,
+        CASE WHEN OCCUPATION = 'Professor' THEN Name ELSE NULL END Professor,
+        CASE WHEN OCCUPATION = 'Singer' THEN Name ELSE NULL END Singer,
+        CASE WHEN OCCUPATION = 'Actor' THEN Name ELSE NULL END Actor,
+
+        ROW_NUMBER() OVER(PARTITION BY OCCUPATION ORDER BY NAME) RNUM
+    FROM OCCUPATIONS
+)
+
+SELECT 
+     MAX(Doctor), -- MAX() function is used in string column for getting the last name after alphabetically sorting!
+     MAX(Professor),
+     MAX(Singer),
+     MAX(Actor)
+FROM FOUR_COLUMNS_WITH_ROW_NUMBER
+GROUP BY RNUM
+-- HAVING RNUM=5
+ORDER BY RNUM;
+
+/*
+SELECT * FROM FOUR_COLUMNS_WITH_ROW_NUMBER
+output:-
+
+NULL NULL NULL Eve 1
+NULL NULL NULL Jennifer 2
+NULL NULL NULL Ketty 3
+NULL NULL NULL Samantha 4
+Aamina NULL NULL NULL 1
+Julia NULL NULL NULL 2
+Priya NULL NULL NULL 3
+NULL Ashley NULL NULL 1
+NULL Belvet NULL NULL 2
+NULL Britney NULL NULL 3
+NULL Maria NULL NULL 4
+NULL Meera NULL NULL 5
+NULL Naomi NULL NULL 6
+NULL Priyanka NULL NULL 7
+NULL NULL Christeen NULL 1
+NULL NULL Jane NULL 2
+NULL NULL Jenny NULL 3
+NULL NULL Kristeen NULL 4
+
+
+*/
