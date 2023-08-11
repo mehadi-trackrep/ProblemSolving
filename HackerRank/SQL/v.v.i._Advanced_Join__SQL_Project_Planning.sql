@@ -13,7 +13,9 @@ WITH start_dates_of_all_projects AS(
     FROM
         Projects
     WHERE
-        Start_Date NOT IN (SELECT End_Date FROM Projects)
+        Start_Date NOT IN (
+            SELECT End_Date FROM Projects
+        )
 ),
 end_dates_of_all_projects AS(
     SELECT
@@ -22,7 +24,9 @@ end_dates_of_all_projects AS(
     FROM
         Projects
     WHERE
-        End_Date NOT IN (SELECT Start_Date FROM Projects)
+        End_Date NOT IN (
+            SELECT Start_Date FROM Projects
+        )
 )
 
 SELECT
