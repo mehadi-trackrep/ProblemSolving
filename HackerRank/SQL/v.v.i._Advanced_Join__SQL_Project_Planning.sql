@@ -9,7 +9,7 @@
 WITH start_dates_of_all_projects AS(
     SELECT
         Start_Date
-        ,ROW_NUMBER() OVER(ORDER BY Start_Date) as rn
+        ,ROW_NUMBER() OVER(ORDER BY Start_Date) as rn -- or we can use RANK() OVER(ORDER BY Start_Date) as rk
     FROM
         Projects
     WHERE
