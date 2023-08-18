@@ -16,6 +16,9 @@
 V.V.I. -- this PROBLEM MYSQL SQL Engine doesn't support CTE! :(
     But in MYSQL Server! it works fine! :)
 
+    Here, in the test case tables, after LEFT JOIN, there will be no NULL values that's why we
+        didn't require any CASE WHEN clause. :)
+
 */
 
 /*
@@ -72,6 +75,25 @@ Testing with the input data without creating any table in MYSQL Server physicall
 */
 
 WITH 
+
+Contests AS (
+
+    SELECT 66406 AS contest_id, 17973 AS hacker_id, 'Rose' AS `name`
+    UNION ALL
+    SELECT 66556 AS contest_id, 79153 AS hacker_id, 'Angela' AS `name`
+    UNION ALL
+    SELECT 94828 AS contest_id, 80275 AS hacker_id, 'Frank' AS `name`
+),
+
+Colleges AS (
+
+    SELECT 11219 AS college_id, 66406 AS contest_id
+    UNION ALL
+    SELECT 32473 AS college_id, 66556 AS contest_id
+    UNION ALL
+    SELECT 56685 AS college_id, 94828 AS contest_id
+),
+
 Challenges AS (
 
     SELECT 18765 AS challenge_id, 11219 AS college_id
@@ -121,50 +143,56 @@ Challenges AS (
     SELECT 47127 AS challenge_id, 28 AS total_submissions, 11 AS total_accepted_submissions
 ),
 
-sum_of_submissions AS(
+challenge_id_wise_sum_of_Submission_Stats AS ( -- means in this CTE, we will have no duplicate rows for each challenge_id, so that when we will join to other table then it will not produce any duplicate rows and thereby we will get rid of summation of same values again and again.
     SELECT
-         cha.college_id AS college_id
-        ,SUM(sus.total_submissions) AS sum_of_total_submissions
-        ,SUM(sus.total_accepted_submissions) AS sum_of_total_accepted_submissions
+         challenge_id
+        ,SUM(total_submissions) AS sum_of_total_submissions
+        ,SUM(total_accepted_submissions) AS sum_of_total_accepted_submissions
     FROM
-        Challenges cha
-        JOIN Submission_Stats sus ON(cha.challenge_id=sus.challenge_id)
+        Submission_Stats
     GROUP BY
-        1
+        challenge_id
 ),
 
-sum_of_views AS(
+challenge_id_wise_View_Stats AS (
     SELECT
-         cha.college_id AS college_id
-        ,SUM(vis.total_views) AS sum_of_total_views
-        ,SUM(vis.total_unique_views) AS sum_of_total_unique_views
+         challenge_id
+        ,SUM(total_views) AS sum_of_total_views
+        ,SUM(total_unique_views) AS sum_of_total_unique_views
     FROM
-        Challenges cha
-        JOIN View_Stats vis ON(cha.challenge_id=vis.challenge_id)
+        View_Stats
     GROUP BY
-        1
+        challenge_id
 )
 
-
 SELECT
-    CASE
-        WHEN sos.college_id IS NOT NULL THEN sos.college_id
-        ELSE sov.college_id
-    END AS college_id,
-    CASE
-        WHEN sos.sum_of_total_submissions IS NOT NULL THEN sos.sum_of_total_submissions
-        ELSE 0
-    END AS sum_of_total_submissions,
-    CASE
-        WHEN sos.sum_of_total_accepted_submissions IS NOT NULL THEN sos.sum_of_total_accepted_submissions
-        ELSE 0
-    END AS sum_of_total_accepted_submissions,
-    CASE
-        WHEN sov.sum_of_total_views IS NOT NULL THEN sov.sum_of_total_views
-        ELSE 0
-    END AS sum_of_total_views,
-    CASE
-        WHEN sov.sum_of_total_unique_views IS NOT NULL THEN sov.sum_of_total_unique_views
-        ELSE 0
-    END AS sum_of_total_unique_views
-FROM sum_of_submissions sos FULL JOIN sum_of_views sov ON (sos.college_id=sov.college_id)
+     con.contest_id
+    ,con.hacker_id
+    ,con.name
+    ,SUM(sub.sum_of_total_submissions)
+    ,SUM(sub.sum_of_total_accepted_submissions)
+    ,SUM(vie.sum_of_total_views)
+    ,SUM(vie.sum_of_total_unique_views)
+FROM 
+  Contests con 
+  JOIN Colleges col 
+      ON (con.contest_id=col.contest_id)
+  JOIN Challenges cha 
+      ON(col.college_id=cha.college_id)
+  LEFT JOIN challenge_id_wise_sum_of_Submission_Stats sub 
+      ON(cha.challenge_id=sub.challenge_id)
+  LEFT JOIN challenge_id_wise_View_Stats vie 
+      ON(cha.challenge_id=vie.challenge_id)
+GROUP BY
+     con.contest_id
+    ,con.hacker_id
+    ,con.name
+HAVING
+     SUM(sub.sum_of_total_submissions)
+    +SUM(sub.sum_of_total_accepted_submissions)
+    +SUM(vie.sum_of_total_views)
+    +SUM(vie.sum_of_total_unique_views)
+    > 0
+ORDER BY
+    con.contest_id
+;
