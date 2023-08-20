@@ -21,6 +21,8 @@ V.V.I. -- this PROBLEM MYSQL SQL Engine doesn't support CTE! :(
 
 */
 
+    V.V.I. ==> Blog link from Adil! - https://medium.com/@ikaadil007/486de13a018
+
 /*
 
 Soultion 1: Using CTE
