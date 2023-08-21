@@ -1,0 +1,67 @@
+
+Hackers AS(
+    SELECT 15758 AS hacker_id, 'Rose' AS name
+    UNION ALL
+    SELECT 20703 AS hacker_id, 'Angela' AS name
+    UNION ALL
+    SELECT 36396 AS hacker_id, 'Frank' AS name
+    UNION ALL
+    SELECT 38289 AS hacker_id, 'Patrick' AS name
+    UNION ALL
+    SELECT 44065 AS hacker_id, 'Lisa' AS name
+    UNION ALL
+    SELECT 53473 AS hacker_id, 'Kimberly' AS name
+    UNION ALL
+    SELECT 62529 AS hacker_id, 'Bonnie' AS name
+    UNION ALL
+    SELECT 79722 AS hacker_id, 'Michael' AS name    
+),
+Submissions AS (
+SELECT '2016-03-01' AS submission_date, 1 AS submission_id, 20703 AS hacker_id
+UNION ALL
+SELECT '2016-03-01' AS submission_date, 2 AS submission_id, 53473 AS hacker_id
+UNION ALL
+SELECT '2016-03-01' AS submission_date, 3 AS submission_id, 79722 AS hacker_id
+UNION ALL
+SELECT '2016-03-01' AS submission_date, 4 AS submission_id, 36396 AS hacker_id
+
+UNION ALL
+SELECT '2016-03-02' AS submission_date, 5 AS submission_id, 20703 AS hacker_id
+UNION ALL
+SELECT '2016-03-02' AS submission_date, 6 AS submission_id, 15758 AS hacker_id
+UNION ALL
+SELECT '2016-03-02' AS submission_date, 7 AS submission_id, 79722 AS hacker_id
+UNION ALL
+SELECT '2016-03-02' AS submission_date, 8 AS submission_id, 79722 AS hacker_id
+UNION ALL
+
+SELECT '2016-03-03' AS submission_date, 9 AS submission_id, 20703 AS hacker_id
+UNION ALL
+SELECT '2016-03-03' AS submission_date, 10 AS submission_id, 36396 AS hacker_id
+UNION ALL
+SELECT '2016-03-03' AS submission_date, 11 AS submission_id, 79722 AS hacker_id
+
+UNION ALL
+SELECT '2016-03-04' AS submission_date, 12 AS submission_id, 20703 AS hacker_id
+UNION ALL
+SELECT '2016-03-04' AS submission_date, 13 AS submission_id, 44065 AS hacker_id
+UNION ALL
+SELECT '2016-03-04' AS submission_date, 14 AS submission_id, 53473 AS hacker_id
+UNION ALL
+SELECT '2016-03-04' AS submission_date, 15 AS submission_id, 79722 AS hacker_id
+UNION ALL
+
+SELECT '2016-03-05' AS submission_date, 16 AS submission_id, 20703 AS hacker_id
+UNION ALL
+SELECT '2016-03-05' AS submission_date, 17 AS submission_id, 38289 AS hacker_id
+UNION ALL
+SELECT '2016-03-05' AS submission_date, 18 AS submission_id, 62529 AS hacker_id
+UNION ALL
+SELECT '2016-03-05' AS submission_date, 19 AS submission_id, 36396 AS hacker_id
+UNION ALL
+SELECT '2016-03-05' AS submission_date, 20 AS submission_id, 36396 AS hacker_id
+UNION ALL
+
+SELECT '2016-03-06' AS submission_date, 21 AS submission_id, 20703 AS hacker_id
+
+),
