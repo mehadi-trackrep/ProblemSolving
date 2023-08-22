@@ -14,3 +14,18 @@ SELECT NAME
 FROM EMPLOYEE
 WHERE SALARY > 2000 AND MONTHS < 10
 ORDER BY EMPLOYEE_ID
+
+/*
+    Good approach to write a query:-
+*/
+
+SELECT
+    name
+FROM
+    Employee
+WHERE
+    months<10
+        and
+    salary > 2000
+ORDER BY
+    employee_id

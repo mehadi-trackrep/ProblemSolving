@@ -46,7 +46,7 @@ GROUP BY
   F1.X,
   F1.Y
 HAVING
-  COUNT(*) > 1 -- here, count(*)>1 means (X,Y) pair where X == Y, exist in different rows, so, we have to show only one pair
+  COUNT(*) > 1 -- here, count(*)>1 means we will consider the row where x==y and that might have a symmetric pair in another row, so after self join the count of this row should be > 1 otherwise it will be excluded from output.
   OR F1.X < F1.Y -- this condition is for X<Y because in the problem statement actual condition is X<=Y means X==Y OR X<Y
 ORDER BY
   F1.X;
