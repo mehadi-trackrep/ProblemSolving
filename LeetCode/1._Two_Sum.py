@@ -13,6 +13,13 @@ class Solution:
 
 if __name__ == '__main__':  ## AC (hash table - dictionary)
     obj = Solution()
+
+    res = obj.twoSum(
+        nums=[8,2,10,4,1,3],
+        target=9
+    )
+    print(res)
+
     res = obj.twoSum(
         nums=[3,2,-2,4],
         target=6

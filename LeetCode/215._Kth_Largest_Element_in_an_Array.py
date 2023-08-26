@@ -1,4 +1,4 @@
-class Solution: #O(N) or O(NLogN)
+class Solution: #O(n) or O(nlogn)
 
     def findKthLargest(self, nums: list[int], k: int) -> int:
         k = len(nums) - k ## V.V.I. ==> reassigned k to track the index of the kth largest element in the sorted array, as we will compare index to index!!
@@ -22,12 +22,31 @@ class Solution: #O(N) or O(NLogN)
         
         return quickSelect(0, len(nums)-1)
 
+class Solution1: #O(n) using 'counting'
 
-        ...
+    def findKthLargest(self, nums: list[int], k: int) -> int:
+        offset = 10000
+        nums = [num + offset for num in nums] ## shifted all nums in positive range
+        mx = max(nums) # then find the maximum number
+        freq = [0] * (mx + 1)
+
+        for num in nums:
+            freq[num] += 1
+
+        for num in range(mx, -1, -1):
+            cnt = freq[num]
+            if k-cnt <= 0:
+                ans = num - offset
+                break
+            elif k-cnt > 0:
+                k -= cnt
+
+        return ans
 
 if __name__=='__main__':
     arr = [3,2,1,5,6,4]
     while True:
         k = int(input("Enter the value of k: "))
-        obj = Solution()
+        # obj = Solution()
+        obj = Solution1()
         print(obj.findKthLargest(arr, k))
