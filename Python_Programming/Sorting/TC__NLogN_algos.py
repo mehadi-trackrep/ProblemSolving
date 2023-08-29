@@ -74,7 +74,7 @@ class HeapSort:
             self.heapify(self.N, i) # O(logN)
         ## step 2: now iterate from the last element to the first element O(N)
         for i in range(self.N-1, -1, -1):
-            ## swap the root element with the last unsorted ith element of the array
+            ## swap the root element with the last unsorted 'ith' element of the array, after this then ith element is sorted!
             self.arr[0], self.arr[i] = self.arr[i], self.arr[0]
             ## heapify the array from the 0th element (root) upto the last unsorted element.
             self.heapify(i, 0)
@@ -106,6 +106,7 @@ class HeapSort:
             # swap the ith_node (root) with the largest_node means the largest element will be the root node now.
             self.arr[largest_node], self.arr[ith_node] = self.arr[ith_node], self.arr[largest_node]
             self.heapify(N, largest_node) ## we need again heapify as in the largest_node the parent index have been a lower value than childs might be.
+
 
 if __name__ == '__main__':
     # arr = [3,2,3,1,2,4,5,5,6]
