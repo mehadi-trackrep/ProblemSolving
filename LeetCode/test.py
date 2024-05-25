@@ -46,4 +46,8 @@ def two():
 
 if __name__=='__main__':
     # one()
-    two()
+    # two()
+    root = 'mehadi'
+    queue = [(root, 0)]
+    node = queue.pop(0)[0]
+    print(node)
