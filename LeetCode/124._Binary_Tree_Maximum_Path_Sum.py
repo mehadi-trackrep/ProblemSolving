@@ -8,19 +8,32 @@ class TreeNode:
         self.right = right
 
 class Solution:
-    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int: # with splitting & without splitting in each node
         max_sum = float('-inf')
+        
+        '''
+            Intuition:-
+                For each node will split the path, meaning go to left & right subtrees.
+                But when we will return then we have to ensure a single path.
+                So, return current_node_val + max(left_val, right_val) # select max path
+                And in between will will just calculate the max_path value & finally return the max_path out of 
+                the dfs() inner function.
+            N.B. In a state - if we have negative values from left and right subtrees then
+                we don't want to add the paths to the current node and return
+        '''
+        
         def dfs(root):
-            if not root: return 0
+            if not root: # Null
+                return 0
+            
             nonlocal max_sum
-            left = max(dfs(root.left), 0)
-            right = max(dfs(root.right), 0)
-            print("--> left: {}, right: {}".format(left, right))
-            max_sum = max(max_sum, max(left, right)) # by taking any one of the child subtree
-            max_sum = max(max_sum, root.val + left + right) # by taking all with root
-            max_sum = max(max_sum, max(root.val + left, root.val + right)) # by taking one child with root
-            print("==> max_sum: {}".format(max_sum))
-            return max_sum
+
+            left_max = max(dfs(root.left), 0)
+            right_max = max(dfs(root.right), 0)
+            
+            max_sum = max(max_sum, root.val + left_max + right_max)
+            
+            return root.val + max(left_max, right_max)
         
         dfs(root)
 
